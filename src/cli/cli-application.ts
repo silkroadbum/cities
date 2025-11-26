@@ -3,7 +3,7 @@ import { ICommand } from "./commands/command.interface.js";
 
 type CommandCollection = Record<string, ICommand>;
 
-export class CLIAppication {
+export class CLIApplication {
   private commands: CommandCollection = {};
 
   constructor(private readonly defaultCommand: string = "--help") {}
