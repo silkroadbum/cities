@@ -1,8 +1,8 @@
-import { ICommand } from "./command.interface.js";
+import { ICommand } from './command.interface.js';
 
 export class HelpCommand implements ICommand {
   public getName(): string {
-    return "--help";
+    return '--help';
   }
 
   public async execute(..._parameters: string[]): Promise<void> {

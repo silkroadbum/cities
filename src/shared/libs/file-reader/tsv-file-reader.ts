@@ -1,29 +1,22 @@
-import { readFileSync } from "node:fs";
+import { readFileSync } from 'node:fs';
 
-import { IFileReader } from "./file-reader.interface.js";
-import {
-  Amenity,
-  HouseTypeEnum,
-  Offer,
-  OfferCityEnum,
-  User,
-  UserType,
-} from "../../types/index.js";
+import { IFileReader } from './file-reader.interface.js';
+import { Amenity, HouseTypeEnum, Offer, OfferCityEnum, User, UserType } from '../../types/index.js';
 
 export class TSVFileReader implements IFileReader {
-  private rawData = "";
+  private rawData = '';
 
   constructor(private readonly fileName: string) {}
 
   private validateRawData(): void {
     if (!this.rawData) {
-      throw new Error("File was not read");
+      throw new Error('File was not read');
     }
   }
 
   private parseRawDataToOffers(): Offer[] {
     return this.rawData
-      .split("\n")
+      .split('\n')
       .filter((row) => row.trim().length > 0)
       .map((line) => this.parseLineToOffer(line));
   }
@@ -52,7 +45,7 @@ export class TSVFileReader implements IFileReader {
       commentsCount,
       latitude,
       longitude,
-    ] = line.split("\t");
+    ] = line.split('\t');
 
     return {
       title,
@@ -60,7 +53,7 @@ export class TSVFileReader implements IFileReader {
       postDate: new Date(createDate),
       city: city as OfferCityEnum,
       previewImage,
-      photos: photos.split(","),
+      photos: photos.split(','),
       isPremium: this.parseBoolean(isPremium),
       isFavorite: this.parseBoolean(isFavorite),
       rating: this.parseNumber(rating),
@@ -68,7 +61,7 @@ export class TSVFileReader implements IFileReader {
       rooms: this.parseNumber(rooms),
       guests: this.parseNumber(guests),
       price: this.parseNumber(price),
-      amenities: amenities.split(",") as Amenity[],
+      amenities: amenities.split(',') as Amenity[],
       user: this.parseUser(userName, email, avatar, password, userType),
       commentsCount: this.parseNumber(commentsCount),
       coordinates: this.parseCoordinates(latitude, longitude),
@@ -80,7 +73,7 @@ export class TSVFileReader implements IFileReader {
   }
 
   parseBoolean(value: string): boolean {
-    return value === "true";
+    return value === 'true';
   }
 
   parseCoordinates(latitude: string, longitude: string) {
@@ -90,13 +83,7 @@ export class TSVFileReader implements IFileReader {
     };
   }
 
-  parseUser(
-    name: string,
-    email: string,
-    avatar: string,
-    password: string,
-    userType: string
-  ): User {
+  parseUser(name: string, email: string, avatar: string, password: string, userType: string): User {
     return {
       name,
       email,
@@ -107,7 +94,7 @@ export class TSVFileReader implements IFileReader {
   }
 
   public read(): void {
-    this.rawData = readFileSync(this.fileName, { encoding: "utf-8" });
+    this.rawData = readFileSync(this.fileName, { encoding: 'utf-8' });
   }
 
   public toArray(): Offer[] {
